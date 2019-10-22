@@ -22,6 +22,11 @@ namespace SupermarketConsoleApp
     
         public int No { get; set; }
         public System.DateTime DateTime { get; set; }
+        public int TotalPrice { get; set; }
+        public bool Membership { get; set; }
+        public bool ProductSale { get; set; }
+        public bool VegiePromotion { get; set; }
+        public bool OtherPromotion { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<OrderItem> OrderItems { get; set; }

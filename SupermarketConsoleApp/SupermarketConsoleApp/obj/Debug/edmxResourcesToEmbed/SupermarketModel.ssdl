@@ -6,6 +6,11 @@
     </Key>
     <Property Name="No" Type="int" Nullable="false" />
     <Property Name="DateTime" Type="datetime" Nullable="false" />
+    <Property Name="TotalPrice" Type="int" Nullable="false" />
+    <Property Name="Membership" Type="bit" Nullable="false" />
+    <Property Name="ProductSale" Type="bit" Nullable="false" />
+    <Property Name="VegiePromotion" Type="bit" Nullable="false" />
+    <Property Name="OtherPromotion" Type="bit" Nullable="false" />
   </EntityType>
   <EntityType Name="OrderItem">
     <Key>
