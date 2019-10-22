@@ -1,0 +1,13 @@
+C:\Users\han2\source\repos\SupermarketConsoleApp\SupermarketConsoleApp\bin\Debug\SupermarketConsoleApp.exe.config
+C:\Users\han2\source\repos\SupermarketConsoleApp\SupermarketConsoleApp\bin\Debug\SupermarketConsoleApp.exe
+C:\Users\han2\source\repos\SupermarketConsoleApp\SupermarketConsoleApp\bin\Debug\SupermarketConsoleApp.pdb
+C:\Users\han2\source\repos\SupermarketConsoleApp\SupermarketConsoleApp\bin\Debug\ConsoleTables.dll
+C:\Users\han2\source\repos\SupermarketConsoleApp\SupermarketConsoleApp\bin\Debug\EntityFramework.dll
+C:\Users\han2\source\repos\SupermarketConsoleApp\SupermarketConsoleApp\bin\Debug\EntityFramework.SqlServer.dll
+C:\Users\han2\source\repos\SupermarketConsoleApp\SupermarketConsoleApp\bin\Debug\ConsoleTables.pdb
+C:\Users\han2\source\repos\SupermarketConsoleApp\SupermarketConsoleApp\bin\Debug\EntityFramework.xml
+C:\Users\han2\source\repos\SupermarketConsoleApp\SupermarketConsoleApp\bin\Debug\EntityFramework.SqlServer.xml
+C:\Users\han2\source\repos\SupermarketConsoleApp\SupermarketConsoleApp\obj\Debug\SupermarketConsoleApp.csprojAssemblyReference.cache
+C:\Users\han2\source\repos\SupermarketConsoleApp\SupermarketConsoleApp\obj\Debug\SupermarketConsoleApp.csproj.CopyComplete
+C:\Users\han2\source\repos\SupermarketConsoleApp\SupermarketConsoleApp\obj\Debug\SupermarketConsoleApp.exe
+C:\Users\han2\source\repos\SupermarketConsoleApp\SupermarketConsoleApp\obj\Debug\SupermarketConsoleApp.pdb

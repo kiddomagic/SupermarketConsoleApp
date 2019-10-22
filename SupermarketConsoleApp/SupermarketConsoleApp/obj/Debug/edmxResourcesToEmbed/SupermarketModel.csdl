@@ -1,0 +1,166 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="SupermarketDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="Product">
+    <Key>
+      <PropertyRef Name="ProductCode" />
+    </Key>
+    <Property Name="ProductCode" Type="String" MaxLength="10" FixedLength="true" Unicode="true" Nullable="false" />
+    <Property Name="ProductName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="TypeId" Type="Int32" Nullable="false" />
+    <Property Name="Price" Type="Int32" Nullable="false" />
+    <Property Name="Unit" Type="String" MaxLength="10" FixedLength="true" Unicode="true" Nullable="false" />
+    <NavigationProperty Name="ProductType" Relationship="Self.FK_Product_ProductType" FromRole="Product" ToRole="ProductType" />
+    <NavigationProperty Name="OrderItems" Relationship="SupermarketDBModel.FK_OrderItem_Product" FromRole="Product" ToRole="OrderItem" />
+    <NavigationProperty Name="Promotions" Relationship="SupermarketDBModel.FK_Promotion_Product" FromRole="Product" ToRole="Promotion" />
+  </EntityType>
+  <EntityType Name="ProductType">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" />
+    <Property Name="ProductType1" Type="String" MaxLength="30" FixedLength="true" Unicode="true" Nullable="false" />
+    <Property Name="IdentificationType" Type="String" MaxLength="10" FixedLength="true" Unicode="true" Nullable="false" />
+    <NavigationProperty Name="Products" Relationship="Self.FK_Product_ProductType" FromRole="ProductType" ToRole="Product" />
+  </EntityType>
+  <EntityType Name="sysdiagram">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="principal_id" Type="Int32" Nullable="false" />
+    <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="version" Type="Int32" />
+    <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+  </EntityType>
+  <Association Name="FK_Product_ProductType">
+    <End Role="ProductType" Type="Self.ProductType" Multiplicity="1" />
+    <End Role="Product" Type="Self.Product" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ProductType">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Product">
+        <PropertyRef Name="TypeId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="SupermarketDBEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Products" EntityType="Self.Product" />
+    <EntitySet Name="ProductTypes" EntityType="Self.ProductType" />
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagram" />
+    <AssociationSet Name="FK_Product_ProductType" Association="Self.FK_Product_ProductType">
+      <End Role="ProductType" EntitySet="ProductTypes" />
+      <End Role="Product" EntitySet="Products" />
+    </AssociationSet>
+    <EntitySet Name="Orders" EntityType="SupermarketDBModel.Order" />
+    <EntitySet Name="OrderItems" EntityType="SupermarketDBModel.OrderItem" />
+    <AssociationSet Name="FK_OrderItem_Order" Association="SupermarketDBModel.FK_OrderItem_Order">
+      <End Role="Order" EntitySet="Orders" />
+      <End Role="OrderItem" EntitySet="OrderItems" />
+    </AssociationSet>
+    <AssociationSet Name="FK_OrderItem_Product" Association="SupermarketDBModel.FK_OrderItem_Product">
+      <End Role="Product" EntitySet="Products" />
+      <End Role="OrderItem" EntitySet="OrderItems" />
+    </AssociationSet>
+    <EntitySet Name="Promotions" EntityType="SupermarketDBModel.Promotion" />
+    <EntitySet Name="PromotionTypes" EntityType="SupermarketDBModel.PromotionType" />
+    <AssociationSet Name="FK_Promotion_Product" Association="SupermarketDBModel.FK_Promotion_Product">
+      <End Role="Product" EntitySet="Products" />
+      <End Role="Promotion" EntitySet="Promotions" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Promotion_PromotionType" Association="SupermarketDBModel.FK_Promotion_PromotionType">
+      <End Role="PromotionType" EntitySet="PromotionTypes" />
+      <End Role="Promotion" EntitySet="Promotions" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="Order">
+    <Key>
+      <PropertyRef Name="No" />
+    </Key>
+    <Property Name="No" Type="Int32" Nullable="false" />
+    <Property Name="DateTime" Type="DateTime" Nullable="false" Precision="3" />
+    <NavigationProperty Name="OrderItems" Relationship="SupermarketDBModel.FK_OrderItem_Order" FromRole="Order" ToRole="OrderItem" />
+  </EntityType>
+  <EntityType Name="OrderItem">
+    <Key>
+      <PropertyRef Name="OrdItemNo" />
+    </Key>
+    <Property Name="OrdItemNo" Type="Int32" Nullable="false" />
+    <Property Name="ItemId" Type="String" Nullable="false" MaxLength="10" FixedLength="true" Unicode="true" />
+    <Property Name="Price" Type="Int32" Nullable="false" />
+    <Property Name="OrderNo" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Order" Relationship="SupermarketDBModel.FK_OrderItem_Order" FromRole="OrderItem" ToRole="Order" />
+    <NavigationProperty Name="Product" Relationship="SupermarketDBModel.FK_OrderItem_Product" FromRole="OrderItem" ToRole="Product" />
+  </EntityType>
+  <Association Name="FK_OrderItem_Order">
+    <End Type="SupermarketDBModel.Order" Role="Order" Multiplicity="1" />
+    <End Type="SupermarketDBModel.OrderItem" Role="OrderItem" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Order">
+        <PropertyRef Name="No" />
+      </Principal>
+      <Dependent Role="OrderItem">
+        <PropertyRef Name="OrderNo" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_OrderItem_Product">
+    <End Type="SupermarketDBModel.Product" Role="Product" Multiplicity="1" />
+    <End Type="SupermarketDBModel.OrderItem" Role="OrderItem" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Product">
+        <PropertyRef Name="ProductCode" />
+      </Principal>
+      <Dependent Role="OrderItem">
+        <PropertyRef Name="ItemId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="Promotion">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" />
+    <Property Name="TypeId" Type="Int32" Nullable="false" />
+    <Property Name="ProductCode" Type="String" Nullable="false" MaxLength="10" FixedLength="true" Unicode="true" />
+    <Property Name="RequiredQuantity" Type="Int32" />
+    <Property Name="QuantityDiscount" Type="Int32" />
+    <Property Name="SalePercent" Type="Int32" />
+    <NavigationProperty Name="Product" Relationship="SupermarketDBModel.FK_Promotion_Product" FromRole="Promotion" ToRole="Product" />
+    <NavigationProperty Name="PromotionType" Relationship="SupermarketDBModel.FK_Promotion_PromotionType" FromRole="Promotion" ToRole="PromotionType" />
+    <Property Name="StartDate" Type="DateTime" Nullable="false" Precision="0" />
+    <Property Name="EndDate" Type="DateTime" Nullable="false" Precision="0" />
+  </EntityType>
+  <EntityType Name="PromotionType">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" />
+    <Property Name="PromotionType1" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="Promotions" Relationship="SupermarketDBModel.FK_Promotion_PromotionType" FromRole="PromotionType" ToRole="Promotion" />
+  </EntityType>
+  <Association Name="FK_Promotion_Product">
+    <End Type="SupermarketDBModel.Product" Role="Product" Multiplicity="1" />
+    <End Type="SupermarketDBModel.Promotion" Role="Promotion" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Product">
+        <PropertyRef Name="ProductCode" />
+      </Principal>
+      <Dependent Role="Promotion">
+        <PropertyRef Name="ProductCode" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Promotion_PromotionType">
+    <End Type="SupermarketDBModel.PromotionType" Role="PromotionType" Multiplicity="1" />
+    <End Type="SupermarketDBModel.Promotion" Role="Promotion" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="PromotionType">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Promotion">
+        <PropertyRef Name="TypeId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema>
