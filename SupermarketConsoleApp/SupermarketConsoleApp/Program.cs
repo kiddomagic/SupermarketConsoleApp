@@ -19,6 +19,13 @@ namespace SupermarketConsoleApp
             ConsoleTable table = new ConsoleTable("Receipt");
             var code = "";
             var orders = new Dictionary<string, float>();
+            Order ord = new Order
+            {
+                No = 400000 + dBEntities.Orders.Count() + 1,
+                DateTime = DateTime.Now
+            };
+            dBEntities.Orders.Add(ord);
+            dBEntities.SaveChanges();
             Console.WriteLine("=======================================================");
             do
             {
@@ -116,6 +123,15 @@ namespace SupermarketConsoleApp
                     total += tmp.Price;
                 }
                 table.AddRow(row);
+                OrderItem item = new OrderItem
+                {
+                    OrdItemNo = ord.No * 1000 + dBEntities.OrderItems.Where(o => o.OrdItemNo/1000 == ord.No).Count() + 1,
+                    OrderNo = ord.No,
+                    ItemId = tmp.ProductCode,
+                    Price = tmp.Price
+                };
+                dBEntities.OrderItems.Add(item);
+                dBEntities.SaveChanges();
             }
             Console.Write("Membership Yes(1)/ No (0): ");            
             var is_mem = int.Parse(Console.ReadLine());            
