@@ -167,25 +167,83 @@ namespace SupermarketConsoleApp
                     {
                         promotion.Id = dBEntities.Promotions.Count() + 1;
                     }
-                    Console.Write("Promotion Type: ");
-                    promotion.TypeId = int.Parse(Console.ReadLine());
+                    var flag = false;
+                    do
+                    {
+                        Console.Write("Promotion Type: ");
+                        promotion.TypeId = int.Parse(Console.ReadLine());
+                        if (promotion.TypeId == 1 && code.ElementAt(0) != 'H')
+                        {
+                            Console.WriteLine("This promotion only applicable for household items!");
+                        }
+                        else
+                        {
+                            flag = true;
+                        }
+                    }
+                    while (!flag);                    
                     promotion.ProductCode = code;
                     promotion.StartDate = DateTime.Now.Date;
                     promotion.EndDate = promotion.StartDate.AddDays(28);
-                    if(promotion.TypeId == 1)
+                    var temp = 0;
+                    if (promotion.TypeId == 1)
                     {
                         promotion.SalePercent = 0;
-                        Console.Write("Quantity Required: ");
-                        promotion.RequiredQuantity = int.Parse(Console.ReadLine());
-                        Console.Write("Quantity Discount: ");
-                        promotion.QuantityDiscount = int.Parse(Console.ReadLine());                        
+                        do
+                        {
+                            do
+                            {
+                                Console.Write("Quantity Required: ");
+                                temp = int.Parse(Console.ReadLine());
+                                if (temp <= 0)
+                                {
+                                    Console.WriteLine("Your input must greater than 0");
+                                }
+                                else
+                                {
+                                    promotion.RequiredQuantity = temp;
+                                }
+                            }
+                            while (temp <= 0);
+                            do
+                            {
+                                Console.Write("Quantity Discount: ");
+                                temp = int.Parse(Console.ReadLine());
+                                if (temp <= 0)
+                                {
+                                    Console.WriteLine("Your input must greater than 0");
+                                }
+                                else
+                                {
+                                    promotion.QuantityDiscount = temp;
+                                }
+                            }
+                            while (temp <= 0);
+                            if (promotion.RequiredQuantity < promotion.QuantityDiscount)
+                            {
+                                Console.WriteLine("The quantity discount must be less or equal to require quantity!");
+                            }
+                        }
+                        while (promotion.RequiredQuantity < promotion.QuantityDiscount);
                     }
                     else
                     {
                         promotion.RequiredQuantity = 0;
                         promotion.QuantityDiscount = 0;
-                        Console.Write("Discount (percentage): ");
-                        promotion.SalePercent = int.Parse(Console.ReadLine());
+                        do
+                        {
+                            Console.Write("Discount (percentage): ");
+                            promotion.SalePercent = int.Parse(Console.ReadLine());
+                            if (promotion.SalePercent <= 0)
+                            {
+                                Console.WriteLine("Your input must be greater than 0");
+                            }
+                            if (promotion.SalePercent == 100)
+                            {
+                                Console.WriteLine("The Percentage sale must be less than 100");
+                            }
+                        }
+                        while (promotion.SalePercent <= 0 || promotion.SalePercent == 100);
                     }
                     Console.WriteLine("-------------------------------------------------------");
                     dBEntities.Promotions.Add(promotion);
