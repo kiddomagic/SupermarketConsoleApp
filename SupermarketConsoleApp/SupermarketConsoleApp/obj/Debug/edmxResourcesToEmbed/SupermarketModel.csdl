@@ -80,6 +80,11 @@
     <Property Name="No" Type="Int32" Nullable="false" />
     <Property Name="DateTime" Type="DateTime" Nullable="false" Precision="3" />
     <NavigationProperty Name="OrderItems" Relationship="SupermarketDBModel.FK_OrderItem_Order" FromRole="Order" ToRole="OrderItem" />
+    <Property Name="TotalPrice" Type="Int32" Nullable="false" />
+    <Property Name="Membership" Type="Boolean" Nullable="false" />
+    <Property Name="ProductSale" Type="Boolean" Nullable="false" />
+    <Property Name="VegiePromotion" Type="Boolean" Nullable="false" />
+    <Property Name="OtherPromotion" Type="Boolean" Nullable="false" />
   </EntityType>
   <EntityType Name="OrderItem">
     <Key>

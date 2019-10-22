@@ -35,6 +35,11 @@
     <EntitySetMapping Name="Orders">
       <EntityTypeMapping TypeName="SupermarketDBModel.Order">
         <MappingFragment StoreEntitySet="Order">
+          <ScalarProperty Name="OtherPromotion" ColumnName="OtherPromotion" />
+          <ScalarProperty Name="VegiePromotion" ColumnName="VegiePromotion" />
+          <ScalarProperty Name="ProductSale" ColumnName="ProductSale" />
+          <ScalarProperty Name="Membership" ColumnName="Membership" />
+          <ScalarProperty Name="TotalPrice" ColumnName="TotalPrice" />
           <ScalarProperty Name="DateTime" ColumnName="DateTime" />
           <ScalarProperty Name="No" ColumnName="No" />
         </MappingFragment>

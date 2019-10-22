@@ -19,6 +19,13 @@ namespace SupermarketConsoleApp
             ConsoleTable table = new ConsoleTable("Receipt");
             var code = "";
             var orders = new Dictionary<string, float>();
+            Order ord = new Order
+            {
+                No = 400000 + dBEntities.Orders.Count() + 1,
+                DateTime = DateTime.Now
+            };
+            dBEntities.Orders.Add(ord);
+            dBEntities.SaveChanges();
             Console.WriteLine("=======================================================");
             do
             {
@@ -82,23 +89,30 @@ namespace SupermarketConsoleApp
                 if (flag)
                 {
                     var discounts = dBEntities.Promotions.Where(p => p.StartDate <= DateTime.Now && p.EndDate >= DateTime.Now && p.ProductCode == product.FirstOrDefault().ProductCode);
+                    ord.OtherPromotion = false;
+                    ord.ProductSale = false;
                     foreach (var discount in discounts)
                     {
                         if(discount.TypeId == 2)
                         {
                             tmp.Price -= tmp.Price * (int)discount.SalePercent / 100;
                             row = string.Format("{0} - {1}: {2} Discount {3}%", tmp.ProductCode, tmp.ProuctName, tmp.Price, discount.SalePercent);                            
+                            row = string.Format("{0} - {1}: {2} Discount {3}%", tmp.ProductCode, tmp.ProuctName, tmp.Price, discount.SalePercent);
+                            ord.ProductSale = true;                            
                         }
                         else
                         {
+                        {                            
                             if(order.Value % discount.RequiredQuantity == 0)
                             {
+                                ord.OtherPromotion = true;
                                 row = string.Format("{0} - {1}: {2} Free {3}", tmp.ProductCode, tmp.ProuctName, tmp.Price, (discount.QuantityDiscount * (order.Value / discount.RequiredQuantity)) );                                
                             }
                             else
                             {
                                 if(order.Value > 1)
                                 {
+                                    ord.OtherPromotion = true;
                                     int free = (int)(discount.QuantityDiscount * (order.Value / discount.RequiredQuantity));
                                     row = string.Format("{0} - {1}: {2} Free {3}", tmp.ProductCode, tmp.ProuctName, tmp.Price, free);                                    
                                 }
@@ -116,6 +130,15 @@ namespace SupermarketConsoleApp
                     total += tmp.Price;
                 }
                 table.AddRow(row);
+                OrderItem item = new OrderItem
+                {
+                    OrdItemNo = ord.No * 1000 + dBEntities.OrderItems.Where(o => o.OrdItemNo/1000 == ord.No).Count() + 1,
+                    OrderNo = ord.No,
+                    ItemId = tmp.ProductCode,
+                    Price = tmp.Price
+                };
+                dBEntities.OrderItems.Add(item);
+                dBEntities.SaveChanges();
             }
             Console.Write("Membership Yes(1)/ No (0): ");            
             var is_mem = int.Parse(Console.ReadLine());            
@@ -124,22 +147,33 @@ namespace SupermarketConsoleApp
             if (vegPromo)
             {
                 table.AddRow("Promotion for Vegetable: Yes");
+                table.AddRow("Promotion for Vegetable: 1%");
+                ord.VegiePromotion = true;
             }
             else
             {
                 table.AddRow("Promotion for Vegetable: No");
+                table.AddRow("Promotion for Vegetable: 0%");
+                ord.VegiePromotion = false;
             }
             if (is_mem == 1)
             {
                 total -= total * 10 / 100;
                 table.AddRow("Membership: Yes");
+                table.AddRow("Membership: 10%");
+                ord.Membership = true;
             }
             else
             {
                 table.AddRow("Membership: No");
+                table.AddRow("Membership: 0% - Not a membership");
+                ord.Membership = false;
             }
             table.AddRow(string.Format("Total: {0}", total));            
             table.Write(Format.MarkDown);
+            ord.TotalPrice = total;
+            dBEntities.Entry(ord).State = EntityState.Modified;
+            dBEntities.SaveChanges();
         }
 
         static void PriceManagement()
