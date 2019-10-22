@@ -26,15 +26,40 @@ namespace SupermarketConsoleApp
                 code = Console.ReadLine();
                 if (orders.ContainsKey(code))
                 {
-                    Console.Write("Quantity: ");
-                    orders[code] += float.Parse(Console.ReadLine());
+                    var temp = (float)0;
+                    do
+                    {
+                        Console.Write("Quantity: ");
+                        temp = float.Parse(Console.ReadLine());
+                        if(temp > 0)
+                        {
+                            orders[code] += temp;
+                        }
+                        else
+                        {
+                            Console.WriteLine("Your input must be lareger than 0");
+                        }
+                    }
+                    while (temp <= 0);
                 }
 
                 if (!code.Equals("E0") && !orders.ContainsKey(code))
                 {
-                    Console.Write("Quantity: ");
-                    var value = float.Parse(Console.ReadLine());
-                    orders.Add(code, value);
+                    var value = (float)0;
+                    do
+                    {
+                        Console.Write("Quantity: ");
+                        value = float.Parse(Console.ReadLine());
+                        if (value > 0)
+                        {
+                            orders.Add(code, value);
+                        }
+                        else
+                        {
+                            Console.WriteLine("Your Input must larger than 0");
+                        }
+                    }
+                    while (value <= 0);
                 }
                 Console.WriteLine("-------------------------------------------------------");
             }
@@ -133,8 +158,17 @@ namespace SupermarketConsoleApp
                         product = dBEntities.Products.Where(p => p.ProductCode.Equals(code)).First();
                     }
                     Console.WriteLine("Current price: {0}/{1}", product.Price, product.Unit);
-                    Console.Write("New price: ");
-                    var price = int.Parse(Console.ReadLine());
+                    var price = 0;
+                    do
+                    {
+                        Console.Write("New price: ");
+                        price = int.Parse(Console.ReadLine());
+                        if(price <= 0)
+                        {
+                            Console.WriteLine("Your input must be less than 0");
+                        }
+                    }
+                    while (price <= 0);                    
                     Console.WriteLine("------------------------------------------------------");
                     product.Price = price;
                     dBEntities.Entry(product).State = EntityState.Modified;
