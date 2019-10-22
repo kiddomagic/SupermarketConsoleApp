@@ -95,10 +95,10 @@ namespace SupermarketConsoleApp
                     {
                         if(discount.TypeId == 2)
                         {
+                            ord.ProductSale = true;
                             tmp.Price -= tmp.Price * (int)discount.SalePercent / 100;
                             row = string.Format("{0} - {1}: {2} Discount {3}%", tmp.ProductCode, tmp.ProuctName, tmp.Price, discount.SalePercent);                            
-                            row = string.Format("{0} - {1}: {2} Discount {3}%", tmp.ProductCode, tmp.ProuctName, tmp.Price, discount.SalePercent);
-                            ord.ProductSale = true;                            
+                            row = string.Format("{0} - {1}: {2} Discount {3}%", tmp.ProductCode, tmp.ProuctName, tmp.Price, discount.SalePercent);                                                        
                         }
                         else
                         {
